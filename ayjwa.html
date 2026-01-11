@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayam Japung</title>
+    <link rel="icon" type="image/png" href="ayjlg.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000 0%, #111 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Logo Fixed di Tengah */
+        .logo-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+           
+            
+        }
+
+        .logo {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* Container Utama */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.438);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #ffffff;
+        }
+
+        /* Menu Navigasi */
+        nav {
+            
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Section Produk */
+        .products-section {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(25px);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .products-section h2 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        header, nav, .products-section{
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea30, #764ba230);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px dashed #667eea;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-image:hover {
+            border-color: #764ba2;
+        }
+
+        .upload-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover .upload-icon {
+            opacity: 1;
+        }
+
+        .image-input {
+            display: none;
+        }
+
+        .product-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-card p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #667eea;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .order-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .order-btn:hover {
+            background: #5568d3;
+        }
+
+        /* Form Pemesanan */
+        .order-form {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(25px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .order-form.active {
+            display: block;
+        }
+
+        .order-form h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #5568d3;
+        }
+
+        .cancel-btn {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .cancel-btn:hover {
+            background: #d0d0d0;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Panduan Edit */
+        .edit-guide {
+            background: rgba(255, 243, 205, 0.5);
+            border: 2px solid rgba(255, 193, 7, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .edit-guide h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .edit-guide ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+
+        .edit-guide code {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #d63384;
+        }
+
+        /* WhatsApp Float Button */
+        .wa-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .wa-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .wa-float svg {
+            width: 35px;
+            height: 35px;
+            fill: white;
+        }
+
+        /* About Section */
+        .about-section {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .about-section.active {
+            display: block;
+        }
+
+        .about-section h2 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .about-section p {
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 16px;
+        }
+
+        .about-section .cta-text {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+            margin-top: 30px;
+        }
+
+        .back-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Fixed -->
+    <div class="logo-container">
+        <div class="logo">
+            <img src="ayjlg.png" alt="LOGO">
+    </div>
+    </div>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Selamat Datang di Ayam Japung</h1>
+            <p>Cita Rasa Khas Jawa dan Lampung dengan Produk Berkualitas dan Harga Terjangkau</p>
+        </header>
+
+        <!-- Navigation Menu -->
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Beranda</a></li>
+                <li><a href="#" onclick="showSection('products')">Produk</a></li>
+                <li><a href="#" onclick="showSection('about')">Tentang Kami</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+        </nav>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            ✅ Pesanan Anda berhasil dikirim! Kami akan segera menghubungi Anda.
+        </div>
+
+        <!-- About Section -->
+        <section class="about-section" id="aboutSection">
+            <h2>TENTANG AYAM JAPUNG</h2>
+            
+            <p>Ayam Japung lahir dari passion untuk menghadirkan cita rasa autentik nusantara yang memadukan kekayaan kuliner Jawa dan Lampung. Kami percaya bahwa setiap hidangan harus dimulai dari bahan berkualitas dan diracik dengan resep yang telah teruji.</p>
+
+            <p>Setiap menu kami olah dari ayam segar pilihan yang dimarinasi dengan bumbu rempah tradisional secara sempurna. Perpaduan rasa gurih yang dalam, pedas yang pas, dan aroma khas rempah nusantara menjadi signature kami. Dari ayam bakar yang juicy hingga goreng yang renyah, setiap gigitan menghadirkan kelezatan yang konsisten dan tidak mengecewakan.</p>
+
+            <p>Ayam Japung bukan sekadar tempat makan, tapi pengalaman kuliner yang menghadirkan kehangatan cita rasa rumahan dengan standar modern. Kami komitmen untuk terus memberikan kualitas terbaik dengan harga yang bersahabat, karena kelezatan berkualitas adalah hak semua orang.</p>
+
+            <p class="cta-text">Mari rasakan sendiri kelezatan yang bikin ketagihan. Pesan sekarang dan buktikan!</p>
+
+            <button class="back-btn" onclick="showSection('products')">Kembali ke Produk</button>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section" id="produk">
+            <h2>Produk Kami</h2>
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image" onclick="document.getElementById('img1').click()">
+                        <span id="placeholder1">🛍️</span>
+                        <div class="upload-icon">📷</div>
+                    </div>
+                    <input type="file" id="img1" class="image-input" accept="image/*" onchange="loadImage(this, 'placeholder1')">
+                    <link rel="icon" type="image/jpg" href="aymbkr">
+                    <h3>Ayam Bakar Seruit</h3>
+                    <p>Ayam Bakar Utuh Dengan Sambal Seruit Khas Lampung</p>
+                    <div class="price">Rp 100.000</div>
+                    <button class="order-btn" onclick="showOrderForm('Ayam Bakar Seruit')">Pesan Sekarang</button>
+                </div>
+
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image" onclick="document.getElementById('img3').click()">
+                        <span id="placeholder3">🎁</span>
+                        <div class="upload-icon">📷</div>
+                    </div>
+                    <input type="file" id="img3" class="image-input" accept="image/*" onchange="loadImage(this, 'placeholder3')">
+                    <h3>Ayam Goreng Seruit</h3>
+                    <p>Ayam Goreng dengan sambal asam pedas</p>
+                    <div class="price">Rp 13.000</div>
+                    <button class="order-btn" onclick="showOrderForm('Ayam Goreng Seruit')">Pesan Sekarang</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Form -->
+        <div class="order-form" id="orderForm">
+            <h2>Form Pemesanan</h2>
+            <form id="orderFormElement">
+                <div class="form-group">
+                    <label>Produk yang Dipesan:</label>
+                    <input type="text" id="productName" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Lengkap:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nomor WhatsApp:</label>
+                    <input type="tel" id="whatsapp" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Jumlah Pesanan:</label>
+                    <input type="number" id="quantity" min="1" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Alamat Lengkap:</label>
+                    <textarea id="address" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Catatan Tambahan:</label>
+                    <textarea id="notes"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Kirim Pesanan</button>
+                <button type="button" class="cancel-btn" onclick="hideOrderForm()">Batal</button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer id="kontak">
+            <h3>Hubungi Kami</h3>
+            <p>📱 WhatsApp: 0857-5535-1489</p>
+            <p>📧 Email: ayamjapung@gmail.com</p>
+            <p>📍 Alamat: Karangsono, Sukorejo Pasuruan, Jawa Timur, Indonesia</p>
+            <p style="margin-top: 20px;">&copy; 2026 Ayam Japung. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/6285755351489?text=Halo%20Ayam%20Japung,%20saya%20mau%20pesan" class="wa-float" target="_blank" title="Chat WhatsApp">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825 0.737 5.607 2.137 8.048l-2.137 7.952 7.933-2.127c2.42 1.37 5.173 2.127 8.067 2.127 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.467c-2.482 0-4.908-0.646-7.07-1.87l-0.507-0.292-4.713 1.262 1.262-4.669-0.292-0.508c-1.207-2.100-1.847-4.507-1.847-6.957 0-7.51 6.11-13.62 13.62-13.62s13.62 6.11 13.62 13.62-6.11 13.62-13.62 13.62zM21.305 19.26c-0.346-0.174-2.049-1.007-2.366-1.123-0.316-0.117-0.547-0.174-0.776 0.174s-0.892 1.123-1.094 1.347c-0.201 0.227-0.403 0.254-0.748 0.080s-1.463-0.539-2.786-1.72c-1.030-0.919-1.726-2.054-1.929-2.398s-0.022-0.535 0.152-0.708c0.156-0.155 0.346-0.403 0.518-0.605s0.231-0.346 0.346-0.577c0.117-0.231 0.058-0.433-0.028-0.605s-0.776-1.87-1.063-2.565c-0.28-0.672-0.56-0.58-0.776-0.591-0.201-0.010-0.431-0.012-0.662-0.012s-0.604 0.086-0.921 0.433c-0.316 0.346-1.206 1.179-1.206 2.873s1.235 3.333 1.406 3.561c0.172 0.231 2.395 3.681 5.816 5.159 0.812 0.354 1.448 0.566 1.944 0.723 0.817 0.26 1.559 0.224 2.145 0.136 0.654-0.098 2.049-0.835 2.335-1.642 0.288-0.808 0.288-1.501 0.201-1.642-0.086-0.145-0.316-0.231-0.662-0.403z"/>
+        </svg>
+    </a>
+</div>
+    <script>
+        // Function untuk load gambar
+        function loadImage(input, placeholderId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const placeholder = document.getElementById(placeholderId);
+                    placeholder.innerHTML = `<img src="${e.target.result}" alt="Product Image">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Function untuk show section
+        function showSection(section) {
+            const aboutSection = document.getElementById('aboutSection');
+            const productsSection = document.getElementById('produk');
+            const orderForm = document.getElementById('orderForm');
+
+            // Hide all sections
+            aboutSection.classList.remove('active');
+            productsSection.style.display = 'none';
+            orderForm.classList.remove('active');
+
+            // Show selected section
+            if (section === 'about') {
+                aboutSection.classList.add('active');
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            } else if (section === 'products' || section === 'home') {
+                productsSection.style.display = 'block';
+                productsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function showOrderForm(productName) {
+            document.getElementById('orderForm').classList.add('active');
+            document.getElementById('productName').value = productName;
+            document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideOrderForm() {
+            document.getElementById('orderForm').classList.remove('active');
+            document.getElementById('orderFormElement').reset();
+        }
+
+        document.getElementById('orderFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                product: document.getElementById('productName').value,
+                name: document.getElementById('customerName').value,
+                whatsapp: document.getElementById('whatsapp').value,
+                email: document.getElementById('email').value,
+                quantity: document.getElementById('quantity').value,
+                address: document.getElementById('address').value,
+                notes: document.getElementById('notes').value
+            };
+
+            // Tampilkan pesan sukses
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            
+            // Sembunyikan form
+            hideOrderForm();
+            
+            // Scroll ke pesan sukses
+            successMsg.scrollIntoView({ behavior: 'smooth' });
+
+            // Sembunyikan pesan setelah 5 detik
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 5000);
+
+            // Di sini Anda bisa menambahkan kode untuk mengirim data ke WhatsApp atau email
+            console.log('Data Pesanan:', formData);
+            
+            // Contoh kirim ke WhatsApp (optional)
+            // const message = `Halo, saya ingin memesan ${formData.product}...`;
+            // window.open(`https://wa.me/6285755351489?text=${encodeURIComponent(message)}`);
+        });
+
+        // Smooth scrolling untuk navigasi
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+       
+    </script>
+</body>
+</html>
